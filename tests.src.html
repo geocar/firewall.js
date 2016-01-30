@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head><style>
+.block,.pass{background:green;color:white;}
+.fail{background:red;color:yellow;}
+</style></head>
+<body onload="go()">
+<div id="r"></div>
+<script src="firewall.min.js"></script>
+<script>
+var T=[],C;
+function go() {
+  T=@@data@@;
+  window.addEventListener('message', function(e) {
+    var x=e.data;
+    if(x==="fail"||x=="pass"){g.innerHTML='';R(x);}
+  });
+  next();
+}
+function R(x){
+  var r=document.getElementById('r');r.innerHTML="<div class=\""+x+"\">"+C+": "+x+"</div>"+r.innerHTML;c=null;
+  if(T.length>0)next();else g.innerHTML='';
+}
+function next() {
+  var g=document.getElementById('g'),x=document.createElement('iframe'),a=T.splice(0,1)[0];
+  C=a[0];FirewallJS(x).load(a[1],function() { R("block"); });
+  g.innerHTML='';g.appendChild(x);
+}
+</script>
+<div id="g"></div>
+</body></html>

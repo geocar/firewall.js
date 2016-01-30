@@ -1,0 +1,17 @@
+{
+  "name": "firewall.js",
+  "version": "1.0.0",
+  "description": "firewall.js creates an `<iframe>` that blocks networking and downloading.",
+  "main": "firewall.min.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "build": "exec ${NODE} build.js"
+  },
+  "author": "Geo Carncross <geocar@gmail.com>",
+  "license": "LGPLv3",
+  "devDependencies": {
+    "uglifyjs": "^2.4.10"
+  }
+}
