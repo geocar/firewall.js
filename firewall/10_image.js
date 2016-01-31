@@ -1,5 +1,6 @@
 function intercept_image(obj) {
   element_attribute(obj, "src", function() { return "" }, blocked);
+  element_attribute(obj, "ismap", function() { return false }, blocked);
   return obj;
 }
 
