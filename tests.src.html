@@ -8,7 +8,7 @@
 <div id="r"></div>
 <script src="firewall.min.js"></script>
 <script>
-var T=[],C;
+var T=[],C,F;
 function go() {
   T=@@data@@;
   window.addEventListener('message', function(e) {
@@ -19,12 +19,14 @@ function go() {
 }
 function R(x){
   var r=document.getElementById('r');r.innerHTML="<div class=\""+x+"\">"+C+": "+x+"</div>"+r.innerHTML;c=null;
-  if(T.length>0)next();else g.innerHTML='';
+  if(T.length>0)next();else {g.innerHTML='';if(F)clearTimeout(F);}
 }
 function next() {
+  if(F)clearTimeout(F);
   var g=document.getElementById('g'),x=document.createElement('iframe'),a=T.splice(0,1)[0];
   C=a[0];FirewallJS(x).load(a[1],function() { R("block"); });
   g.innerHTML='';g.appendChild(x);
+  F=setTimeout(function() { R("timeout") },500);//?
 }
 </script>
 <div id="g"></div>
