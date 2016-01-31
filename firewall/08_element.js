@@ -3,7 +3,7 @@ function element_attribute(obj, key, getter, setter) {
     configurable: true,
     get: getter
   };
-  var lkey = key.toLowerCase(), fkey = function(q) { return lkey === (""+qkey).toLowerCase() };
+  var lkey = key.toLowerCase(), fkey = function(q) { return lkey === (""+q).toLowerCase() };
   if(setter) {
     descriptor.set = setter;
     wrap_filter(obj, "setAttribute", fkey, function(key, value) {

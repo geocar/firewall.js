@@ -3,5 +3,6 @@ function intercept_image(obj) {
   return obj;
 }
 
-wrap_constructor(window,"Image",intercept_image);
-createelement_constructor("IMG", intercept_image);
+intercept_image(Image.prototype);
+intercept_image(HTMLImageElement.prototype);
+innerhtml_observe("IMG",Image);
