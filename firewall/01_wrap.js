@@ -18,7 +18,7 @@ function wrap_constructor(obj,field,after) {
 
 function wrap_filter(obj,name,query, intercept) {
   var orig = obj[name];
-  return function_named(name, function(a) {
+  obj[name] = function_named(name, function(a) {
     return (query.apply(this,arguments)?intercept:orig).apply(this,arguments);
   });
 }
