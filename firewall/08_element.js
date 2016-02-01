@@ -17,7 +17,28 @@ function element_attribute(obj, key, getter, setter) {
     return getter();
   });
   var orig = Object.getOwnPropertyDescriptor(obj, key);
-  if(orig && orig.configurable)
+  if(orig && orig.configurable) {
     Object.defineProperty(obj, key, descriptor);
+  } else {
+    var paused = false;
+    new MutationObserver(function(a) {
+      var n = a.length, i, e = null;
+      paused = true;
+      for(i=0;i<n;++i) {
+        var o=a[i];
+        if(o.type === "attributes" && o.attributeName === lkey && o.target.__proto__===obj) {
+          try { setter.call(o.target, o.attributeValue) } catch(_) { e = _ };
+        }
+      }
+      paused = false;
+      if(e) throw e;
+    }).observe(document.body,{
+      subtree: true,
+      attributes: true,
+      characterData: false,
+      childList: false,
+      "attributeFilter": [key]
+    });
+  }
   return obj
 }
