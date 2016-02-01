@@ -40,14 +40,16 @@ function innerhtml_slow(node, html) {
   }
 }
 
-Object.defineProperty(Element.prototype,'innerHTML',{
-  enumerable:true,
-  configurable:true,
-  get: function() {
-    return innerhtml_orig.get.call(this);
-  },
-  set: function(html) {
-    var qr = new RegExp(Object.keys(innerhtml_watches).join("|"),"i");
-    if(html.match(qr)) innerhtml_slow(this, html); else innerhtml_orig.set.call(this,html);
-  }
-});
+if(innerhtml_orig.get && innerhtml_orig.set) {
+  Object.defineProperty(Element.prototype,'innerHTML',{
+    enumerable:true,
+    configurable:true,
+    get: function() {
+      return innerhtml_orig.get.call(this);
+    },
+    set: function(html) {
+      var qr = new RegExp(Object.keys(innerhtml_watches).join("|"),"i");
+      if(html.match(qr)) innerhtml_slow(this, html); else innerhtml_orig.set.call(this,html);
+    }
+  });
+}
