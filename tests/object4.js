@@ -1,4 +1,3 @@
-g=document.createElement('object');
+g=document.createElement('div');
 document.body.appendChild(g);
-g.usemap='http://www.example.com/';
-
+g.innerHTML = '<object data="http://www.example.com/"></object>';
