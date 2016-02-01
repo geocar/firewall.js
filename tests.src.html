@@ -24,7 +24,9 @@ function done(){
   if(T.length>0)next();else {g.innerHTML='';if(F)clearTimeout(F),F=null;}
 }
 function R(x){
-  var r=document.getElementById('r');r.innerHTML="<div class=\""+x+"\">"+C+": "+x+"</div>"+r.innerHTML;c=null;
+  var r=document.getElementById('r');
+  r.innerHTML="<div class=\""+x+"\">"+C+": "+x+"</div>"+r.innerHTML;
+  c=null;
   done();
 }
 function B(x){return x.replace(/\.js$/,"")}
@@ -32,10 +34,10 @@ function next() {
   var g=document.getElementById('g'),x=document.createElement('iframe'),a=T.splice(0,1)[0];
   if(!H.exec(B(a[0]))) return done();
 
-  if(F)clearTimeout(F);
+  if(F)clearTimeout(F);F=null;
   C=a[0];FirewallJS(x).load(a[1],function() { R("block"); });
   g.innerHTML='';g.appendChild(x);
-  F=setTimeout(function() { R("timeout");F=null; },500);//?
+  F=setTimeout(function() { R("timeout") },500);//?
 }
 </script>
 <div id="g"></div>
