@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head><style>
-.block,.pass{background:green;color:white;}
-.fail{background:red;color:yellow;}
+.fail1,.pass1,.block0,.pass0{background:green;color:white;}
+.fail0,.block1{background:red;color:yellow;}
 </style></head>
 <body onload="go()">
 <div id="r"></div>
 <script src="firewall.min.js"></script>
 <script>
-var H=/.*/,T=[],C,F;
+var H=/.*/,T=[],C,F,A=0;
 function go() {
   T=@@data@@;
   window.onhashchange = go;g.innerHTML=''; document.getElementById('r').innerHTML='';
@@ -16,6 +16,7 @@ function go() {
   if(h.length>0)H=new RegExp(h.replace(/[+,]+/g,"|").replace(/\*/,".*").split(/\|/).map(function(x){ return "^"+x+"$" }).join("|") );
   window.addEventListener('message', function(e) {
     var x=e.data;
+    if(x==="anti")A=1;
     if(x==="fail"||x=="pass"){g.innerHTML='';R(x);}
   });
   if(T.length>0)next();
@@ -25,7 +26,7 @@ function done(){
 }
 function R(x){
   var r=document.getElementById('r');
-  r.innerHTML="<div class=\""+x+"\">"+C+": "+x+"</div>"+r.innerHTML;
+  r.innerHTML="<div class=\""+x+A+"\">"+C+": "+x+"</div>"+r.innerHTML;
   c=null;
   done();
 }
@@ -35,7 +36,7 @@ function next() {
   if(!H.exec(B(a[0]))) return done();
 
   if(F)clearTimeout(F);F=null;
-  C=a[0];FirewallJS(x).load(a[1],function() { R("block"); });
+  A=0,C=a[0];FirewallJS(x).load(a[1],function() { R("block"); });
   g.innerHTML='';g.appendChild(x);
   F=setTimeout(function() { R("timeout") },500);//?
 }
