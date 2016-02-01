@@ -1,3 +1,7 @@
+/* click is intercepted here, and in 09_events.js, but nothing else
+   is modified because of a common pattern, where the "a" element is
+   used as a URL parser.
+*/
 function intercept_a(obj) {
   obj['click'] = function_named('click',blocked);
   return obj;
