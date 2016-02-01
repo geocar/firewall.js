@@ -1,18 +1,27 @@
 (function(module){
   function firewall(elem, code, oops) {
-    var key, extra_oops = null;
+    var key, extra_oops = null, counter = 0;
     if(code === undefined) code = null;
     elem.setAttribute("firewall","");
     elem.setAttribute("sandbox","allow-scripts");
+
+    elem.addEventListener("load", function() {
+      if(counter > 0) shutdown();
+      ++counter;
+    });
     reset();
+
+    function shutdown() {
+      reset();
+      try{oops()}catch(_){};
+      try{extra_oops()}catch(_){};
+    }
 
     window.addEventListener("message", function(e) {
       if(e.source === elem.contentWindow) {
         if(e.data === null) {
         } else if(e.data === 'block') {
-          reset();
-          if(oops) setTimeout(oops,0);
-          if(extra_oops) setTimeout(extra_oops,0);
+          shutdown();
 
         } else if(e.data === key) {
           readyp=true;
