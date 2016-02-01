@@ -1,5 +1,10 @@
 var innerhtml_orig = Object.getOwnPropertyDescriptor(Element.prototype,'innerHTML');
 var innerhtml_watches = {};
+var innerhtml_cdata_filter = {};
+
+function innerhtml_cdata(tag, impl) {
+  innerhtml_cdata_filter[tag.toUpperCase()] = impl;
+}
 
 function innerhtml_observe(tag, cons) {
   if(!cons) cons = function(){ return document.createElement(tag); };
@@ -48,6 +53,9 @@ if(innerhtml_orig.get && innerhtml_orig.set) {
       return innerhtml_orig.get.call(this);
     },
     set: function(html) {
+      var cf = innerhtml_cdata_filter[(""+this.tagName).toUpperCase()];
+      if(cf) return cf.call(this, html);
+
       var qr = new RegExp(Object.keys(innerhtml_watches).join("|"),"i");
       if(html.match(qr)) innerhtml_slow(this, html); else innerhtml_orig.set.call(this,html);
     }
