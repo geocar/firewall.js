@@ -29,7 +29,12 @@ function element_attribute(obj, key, getter, setter) {
       for(i=0;i<n;++i) {
         var o=a[i];
         if(o.type === "attributes" && o.attributeName === lkey && o.target.__proto__===obj) {
-          try { setter.call(o.target, o.attributeValue) } catch(_) { e = _ };
+          try {
+            setter.call(o.target, o.attributeValue)
+          } catch(_) {
+            e = _;
+            o.target.parentNode.removeChild(o.target);
+          };
         }
       }
       element_attribute_mutating = false;
