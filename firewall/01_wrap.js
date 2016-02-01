@@ -7,6 +7,15 @@ function wrap_after(obj,field,after) {
   return obj;
 }
 
+function wrap_before(obj,field,before) {
+  var orig = obj[field];
+  obj[field] = function_named(field, function() {
+    var args = before.apply(this, [].slice.call(arguments));
+    return orig.apply(this,args);
+  });
+  return obj;
+}
+
 function wrap_constructor(obj,field,after) {
   var orig = obj[field];
   obj[field] = function_named(field, function() {
