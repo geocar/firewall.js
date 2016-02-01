@@ -16,6 +16,8 @@ function element_attribute(obj, key, getter, setter) {
   wrap_filter(obj, "getAttribute", fkey, function(key) {
     return getter();
   });
-  Object.defineProperty(obj, key, descriptor);
+  var orig = Object.getOwnPropertyDescriptor(obj, key);
+  if(orig && orig.configurable)
+    Object.defineProperty(obj, key, descriptor);
   return obj
 }
