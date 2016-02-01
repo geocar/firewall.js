@@ -39,6 +39,11 @@ wrap_before(CSSStyleSheet.prototype, "insertRule", function(text, position) {
 });
 
 style_wrap(HTMLElement.prototype);
+wrap_before(HTMLElement.prototype, "setAttribute", function(k, v) {
+  if(k == "style") style_check(v);
+  return arguments;
+});
+
 style_wrap(CSSStyleRule.prototype);
 style_wrap(CSSRule.prototype);
 

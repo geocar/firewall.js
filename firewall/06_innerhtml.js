@@ -41,6 +41,9 @@ function innerhtml_slow(node, html) {
     visit(elem.firstChild);
 
     var cons=innerhtml_watches[name];
+    if(!cons && elem.getAttribute && elem.getAttribute("style")) {
+      cons = function(){ return document.createElement(name) };
+    }
     if(cons) {
       var replace = new cons(), attr = elem.attributes, n = attr.length, i = 0;
       for(; i < n; ++i) {
@@ -65,7 +68,7 @@ if(innerhtml_orig.get && innerhtml_orig.set) {
       if(cf) return cf.call(this, html);
 
       var qr = new RegExp(Object.keys(innerhtml_watches).join("|"),"i");
-      if(html.match(qr)) innerhtml_slow(this, html); else innerhtml_orig.set.call(this,html);
+      if(qr.exec(html)) innerhtml_slow(this, html); else innerhtml_orig.set.call(this,html);
     }
   });
 }
