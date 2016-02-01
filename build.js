@@ -7,6 +7,7 @@ fs.readdirSync("tests/").forEach(function(x){
     T.push([x,e]);
   }
 });
+T.sort();T.reverse();
 fs.writeFileSync("tests.html", 
   (fs.readFileSync("tests.src.html")+"").replace(/@@data@@/,JSON.stringify(T))
 );
