@@ -8,25 +8,34 @@
 <div id="r"></div>
 <script src="firewall.min.js"></script>
 <script>
-var T=[],C,F;
+var H=/.*/,T=[],C,F;
 function go() {
   T=@@data@@;
+  window.onhashchange = go;g.innerHTML=''; document.getElementById('r').innerHTML='';
+  var h=location.hash.replace(/^#+/,"");
+  if(h.length>0)H=new RegExp(h.replace(/[+,]+/g,"|").replace(/\*/,".*").split(/\|/).map(function(x){ return "^"+x+"$" }).join("|") );
   window.addEventListener('message', function(e) {
     var x=e.data;
     if(x==="fail"||x=="pass"){g.innerHTML='';R(x);}
   });
-  next();
+  if(T.length>0)next();
+}
+function done(){
+  if(T.length>0)next();else {g.innerHTML='';if(F)clearTimeout(F),F=null;}
 }
 function R(x){
   var r=document.getElementById('r');r.innerHTML="<div class=\""+x+"\">"+C+": "+x+"</div>"+r.innerHTML;c=null;
-  if(T.length>0)next();else {g.innerHTML='';if(F)clearTimeout(F);}
+  done();
 }
+function B(x){return x.replace(/\.js$/,"")}
 function next() {
-  if(F)clearTimeout(F);
   var g=document.getElementById('g'),x=document.createElement('iframe'),a=T.splice(0,1)[0];
+  if(!H.exec(B(a[0]))) return done();
+
+  if(F)clearTimeout(F);
   C=a[0];FirewallJS(x).load(a[1],function() { R("block"); });
   g.innerHTML='';g.appendChild(x);
-  F=setTimeout(function() { R("timeout") },500);//?
+  F=setTimeout(function() { R("timeout");F=null; },500);//?
 }
 </script>
 <div id="g"></div>
