@@ -1,3 +1,4 @@
+var element_attribute_mutating = false;
 function element_attribute(obj, key, getter, setter) {
   var descriptor = {
     configurable: true,
@@ -20,17 +21,18 @@ function element_attribute(obj, key, getter, setter) {
   if(orig && orig.configurable) {
     Object.defineProperty(obj, key, descriptor);
   } else {
-    var paused = false;
     new MutationObserver(function(a) {
+      if(element_attribute_mutating)return;
+      element_attribute_mutating = true;
+
       var n = a.length, i, e = null;
-      paused = true;
       for(i=0;i<n;++i) {
         var o=a[i];
         if(o.type === "attributes" && o.attributeName === lkey && o.target.__proto__===obj) {
           try { setter.call(o.target, o.attributeValue) } catch(_) { e = _ };
         }
       }
-      paused = false;
+      element_attribute_mutating = false;
       if(e) throw e;
     }).observe(document.body,{
       subtree: true,
