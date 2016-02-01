@@ -26,9 +26,13 @@ This means that network operations might not be blocked, although at least they 
 shutdown.
 ##Building
 
-Pre-flight:
+###Pre-flight
+
+Node.JS is required to build the script and its test cases.
 
     npm install
+
+###Development
 
 To build `firewall.min.js` and `tests.html` run:
 
