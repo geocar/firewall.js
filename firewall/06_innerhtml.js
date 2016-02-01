@@ -29,11 +29,19 @@ function innerhtml_slow(node, html) {
 
   function visit(elem) {
     if(!elem)return;
-    
-    visit(elem.firstChild),visit(elem.nextSibling); //dfs
 
-    var cons;
-    if (elem.tagName && (cons=innerhtml_watches[ elem.tagName.toUpperCase() ])) {
+    visit(elem.nextSibling);
+
+    var name = (""+elem.tagName).toUpperCase();
+    var filter = innerhtml_cdata_filter[name];
+    if(filter) {
+      filter.call(elem, elem.innerHTML);
+    }
+
+    visit(elem.firstChild);
+
+    var cons=innerhtml_watches[name];
+    if(cons) {
       var replace = new cons(), attr = elem.attributes, n = attr.length, i = 0;
       for(; i < n; ++i) {
         var a = attr[i];
