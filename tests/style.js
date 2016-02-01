@@ -1,1 +1,1 @@
-document.body.style.background='url(http://www.example.com/)';
+document.body.style.background='url(http://www.example.com/?style)';
