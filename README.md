@@ -11,6 +11,7 @@ a network request, a lot of different subtly incompatible web browsers, and ther
 covering:
 
 * Basic html tags like [a](tests/a.js), [link](tests/link.js), [audio](tests/audio.js), [video](tests/video.js), [images](tests/image.js) and [script](tests/script.js)
+* Complex browser interaction like [innerHTML](tests/innerhtml.js) and [events](tests/a2.js)
 * JavaScript API like [location](tests/location.js), [sendBeacon](tests/sendbeacon.js) and [xmlhttprequest](tests/xmlhttprequest.js)
 * CSS/Stylesheets [inline](tests/style6.js), [parsed](tests/style4.js), and [programmatic](tests/style5.js)
 * [SVG](tests/svg.js)
