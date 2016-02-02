@@ -37,7 +37,11 @@ function next() {
   if(!H.exec(B(a[0]))) return done();
 
   if(F)clearTimeout(F);F=null;
-  A=0,C=a[0];FirewallJS(x).load(a[1],function(url) { R("block", " - "+url); });
+  A=0,C=a[0];FirewallJS(x, {
+    code: a[1],
+    onblock: function(e) { R("block", " - "+e.data); },
+    settings:{testp:1,whitelist:["http://www.example.com/?anti_whitelist"]}
+  });
   g.innerHTML='';g.appendChild(x);
   F=setTimeout(function() { R("timeout") },500);//?
 }

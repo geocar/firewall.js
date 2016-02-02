@@ -1,3 +1,4 @@
-var function_named = require("./function_named");
+var wrap = require("./wrap");
+var blocked = require("./blocked");
 if("sendBeacon" in navigator)
-  navigator["sendBeacon"] = function_named("sendBeacon", require("./blocked"));
+  wrap.before(navigator, "sendBeacon", blocked);

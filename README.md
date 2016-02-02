@@ -4,7 +4,7 @@ firewall.js creates an `<iframe>` that blocks networking and downloading.
     document.body.appendChild(x);
  
     var f = FirewallJS(x);
-    l.onblock = function(e) {
+    f.onblock = function(e) {
       console.log("Blocked access to:" + e.data);
     };
     f.load("<script>new Image().src='http://www.google.com/'</script>")
@@ -22,6 +22,22 @@ covering:
 Ideally, a firewalled script will not be able to detect firewall.js
 
 Suggestions and contributions are welcome.
+
+##Whitelist/Blacklist
+An alternative to the "block all" default is a whitelist/blacklist mode.
+
+    var f = FirewallJS(x);
+    f.whitelist([ "http://good.example.com" ]);
+
+will permit resources on `good.example.com` while:
+
+    var f = FirewallJS(x);
+    f.blacklist([ "http://evil.example.com" ]);
+    f.whitelist([ "http://*.example.com" ]);
+
+will permit resources on `good.example.com` and `whatever.example.com` but not `evil.example.com`.
+
+The blacklist and whitelist (if used) must be supplied before loading the content.
 
 ##Limitations
 Safari can't intercept changes to `innerHTML` and element attributes, so a `MutationObserver` is used instead.

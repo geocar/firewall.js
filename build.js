@@ -1,4 +1,5 @@
 U=require("uglifyjs"),fs=require("fs"),MemoryFS = require("memory-fs");
+P="var __config=window['__firewall_config'];delete window['__firewall_config'];";
 
 f=fs.readdirSync("firewall/").filter(function(x){
   if(!x.match(/^[^\.].*\.js$/)) return false;      // not javascript
@@ -22,10 +23,10 @@ fs.writeFileSync("tests.html",
 
 
 W = require("webpack")({ 
-  context:__dirname+"/firewall",
+  context:__dirname+"/firewall/",
   entry:f,
   target:"web",
-  output:{filename:'a.js',path:'/',library:false},
+  output:{filename:'tmp.js',path:'/',library:false},
   node:{console:false,global:false,process:false,Buffer:false,__filename:true,__dirname:false},
 });
 F=W.outputFileSystem = new MemoryFS();
@@ -35,7 +36,7 @@ W.run(function(err,stats) {
 
   if(stats.hasErrors())process.exit(1);
 
-  var f=F.readFileSync("/a.js")+'', g;
+  var f="(function(){"+P+F.readFileSync("/tmp.js")+'})();', g;
   try {
     g=U.minify(f,{fromString:true,compress:{unsafe:true,hoist_vars:true}}).code;
   } catch(e) {

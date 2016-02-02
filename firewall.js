@@ -1,7 +1,12 @@
 (function(module){
-  function firewall(elem, code, oops) {
-    var key, extra_oops = null, counter = 0;
-    if(code === undefined) code = null;
+  function firewall(elem, options, oops) {
+    var code, key, extra_oops = null, counter = 0;
+    if(options === undefined || options === null || typeof options === "string") {
+      code = options;
+      options = {};
+    } else if (options.code) {
+      code = options.code;
+    }
     elem.setAttribute("firewall","");
     elem.setAttribute("sandbox","allow-scripts");
 
@@ -15,6 +20,7 @@
       reset();
       try{oops(reason)}catch(_){};
       try{extra_oops(reason)}catch(_){};
+      try{options.onblock({data:reason})}catch(_){};
       try{elem.onblock({data:reason})}catch(_){};
     }
 
@@ -34,15 +40,24 @@
 
     function send() {
       key = null;
-      try{elem.contentWindow.postMessage("@@code@@;setTimeout(new Function("+JSON.stringify(code)+'),0)','*')}catch(_){};
+      try{elem.contentWindow.postMessage("window.__firewall_config="+JSON.stringify(options.settings)
++";@@code@@;setTimeout(new Function("+JSON.stringify(code)+'),0)','*')}catch(_){};
     }
     function reset() {
       key = "$"+Math.random().toString(36).substr(2);
       elem.srcdoc = '<b></b>';
-      elem.srcdoc = '<scr'+'ipt>(function(k){function f(x){if(!k)++k,setTimeout(new Function(x.data))};addEventListener("message",f);parent.postMessage('+JSON.stringify(key)+',"*")})()</scr'+'ipt>';
+      elem.srcdoc = '<scr'+'ipt>(function(k){function f(x){if(!k)++k,setTimeout(new Function(x.data))};addEventListener("message",f);try{document.documentElement.innerHTML="";}catch(_){};parent.postMessage('+JSON.stringify(key)+',"*")})()</scr'+'ipt>';
       readyp = false;
     }
 
+    elem.whitelist = function(list) {
+      if(options.settings === undefined) options.settings = {};
+      options.settings.whitelist = list;
+    };
+    elem.blacklist = function(list) {
+      if(options.settings === undefined) options.settings = {};
+      options.settings.blacklist = list;
+    };
     elem.load = function(text, oops) {
       if(code !== null) reset();
       extra_oops = oops;
