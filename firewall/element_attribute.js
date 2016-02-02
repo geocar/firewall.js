@@ -19,9 +19,7 @@ function element_attribute(obj, key, getter, setter) {
     return getter();
   });
   var orig = Object.getOwnPropertyDescriptor(obj, key);
-  if(orig && orig.configurable) {
-    Object.defineProperty(obj, key, descriptor);
-  }
+  try { Object.defineProperty(obj, key, descriptor); } catch(_){};
   new MutationObserver(function(a) {
     if(element_attribute_mutating)return;
     element_attribute_mutating = true;
