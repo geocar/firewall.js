@@ -1,3 +1,7 @@
+var innerhtml = require("./innerhtml");
+var blocked = require("./blocked");
+var wrap = require("./wrap");
+
 function style_check(text) {
   if(text.cssRule) text = text.toString();
   if(text.match(/url\s*\([\s"']*http/i)) blocked();
@@ -33,13 +37,13 @@ function style_wrap(proto) {
   });
 }
 
-wrap_before(CSSStyleSheet.prototype, "insertRule", function(text, position) {
+wrap.before(CSSStyleSheet.prototype, "insertRule", function(text, position) {
   style_check(text);
   return arguments;
 });
 
 style_wrap(HTMLElement.prototype);
-wrap_before(HTMLElement.prototype, "setAttribute", function(k, v) {
+wrap.before(HTMLElement.prototype, "setAttribute", function(k, v) {
   if(k == "style") style_check(v);
   return arguments;
 });
@@ -47,8 +51,8 @@ wrap_before(HTMLElement.prototype, "setAttribute", function(k, v) {
 style_wrap(CSSStyleRule.prototype);
 style_wrap(CSSRule.prototype);
 
-innerhtml_cdata('STYLE', function(css) {
+innerhtml.cdata('STYLE', function(css) {
   style_check(css);
-  innerhtml_orig.set.call(this,css);
+  innerhtml.orig.set.call(this,css);
 });
 

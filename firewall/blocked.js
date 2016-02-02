@@ -3,3 +3,5 @@ function blocked() {
   window.close(),location.href='about:blank';
   throw 69;
 }
+
+module.exports = blocked;

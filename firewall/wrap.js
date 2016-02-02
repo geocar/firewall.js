@@ -1,3 +1,6 @@
+var function_named = require("./function_named");
+var new_apply = require("./new_apply");
+
 function wrap_after(obj,field,after) {
   var orig = obj[field];
   obj[field] = function_named(field, function() {
@@ -31,3 +34,10 @@ function wrap_filter(obj,name,query, intercept) {
     return (query.apply(this,arguments)?intercept:orig).apply(this,arguments);
   });
 }
+
+module.exports = {
+  after: wrap_after,
+  before: wrap_before,
+  constructor: wrap_constructor,
+  filter: wrap_filter
+};

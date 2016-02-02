@@ -15,3 +15,5 @@ function function_named(name, body) {
   if(f.toSource) f.toSource = function toSource() { return name_string }.bind(null);
   return f;
 }
+
+module.exports = function_named;

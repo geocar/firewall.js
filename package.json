@@ -13,5 +13,9 @@
   "license": "LGPLv3",
   "devDependencies": {
     "uglifyjs": "^2.4.10"
+  },
+  "dependencies": {
+    "memory-fs": "^0.3.0",
+    "webpack": "^1.12.12"
   }
 }

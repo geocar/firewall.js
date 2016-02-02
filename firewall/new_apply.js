@@ -4,3 +4,5 @@ function new_apply(klass, args) {
   var body = "return new klass(" + args.map(function(_,i){ return "args["+i+"]" }).join(",") + ")";
   return new Function("klass", "args", body)(klass, args);
 }
+
+module.exports = new_apply;

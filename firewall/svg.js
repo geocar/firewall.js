@@ -1,9 +1,12 @@
-innerhtml_observe('SVG');
-innerhtml_cdata('SVG', function(text) {
+var innerhtml = require("./innerhtml");
+var blocked = require("./blocked");
+
+innerhtml.observe('SVG');
+innerhtml.cdata('SVG', function(text) {
   var d = new DOMParser().parseFromString(this.outerHTML, "application/xml");
   visit(d.firstChild, {});
 
-  innerhtml_orig.set.call(this,text);
+  innerhtml.orig.set.call(this,text);
 
   function visit(elem) {
     if(!elem) return;

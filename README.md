@@ -42,7 +42,7 @@ To build `firewall.min.js` and `tests.html` run:
 ##Contributing
 ###Tests
 Tests need to produce network activity; a full-featured test will send a signal to the [test system](tests.src.html).
-On Google Chrome, we can reliably [detect network activity](firewall/99_poll.js) even if we can't block it, however
+On Google Chrome, we can reliably [detect network activity](firewall/poll.js) even if we can't block it, however
 if your test only works on another browser, you may need to add some instrumentation:
 
 * `parent.postMessage("fail",'*')` if you have (or believe you have) performed network activity
@@ -70,13 +70,11 @@ firewall.js, you can contribute an Anti-Test to prevent further regressions.
 This should be done first. Look at [anti\_a.js](tests/anti_a.js) for an example.
 
 ###Firewall
-The firewall is built out of many small files in [firewall/](firewall/). The number at the beginning is to force the files
-into an order when they are assmbled, so files in `10` can use functions defined by `06`.
+The firewall API is in [firewall.js](firewall.js). It's responsible for getting the payload into the iframe, and interpreting errors.
 
-Variables created should be based on the filename, so `innerhtml_slow` is defined in
-[firewall/06\_innerhtml.js](firewall/06_innerhtml.js).
-
-The API is in [firewall.js](firewall.js) - note the assembly process is in [build.js](build.js).
+The payload is in [firewall/](firewall/) and are assembled with the firewall API into `firewall.min.js` using [build.js](build.js).
+[webpack](https://webpack.github.io/) is used for dependency tracking, and [uglifyJS](https://www.npmjs.com/package/uglify-js) is used
+to minimise the chunks.
 
 ##Licensing
 firewall.js, and its product `firewall.min.js` are redistributable under the [LGPL v3 or any later version](http://www.gnu.org/licenses/lgpl.en.html), and for the avoidance of doubt and confusion, are derived from the [tests](tests/).

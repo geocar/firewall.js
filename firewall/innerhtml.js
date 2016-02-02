@@ -72,3 +72,9 @@ if(innerhtml_orig.get && innerhtml_orig.set) {
     }
   });
 }
+
+module.exports = {
+  cdata:innerhtml_cdata, 
+  observe:innerhtml_observe,
+  orig:innerhtml_orig
+};
