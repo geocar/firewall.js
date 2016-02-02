@@ -17,7 +17,7 @@
     reset();
 
     function shutdown(reason) {
-      reset();
+      if(!options.settings&&!options.settings.monitor)reset();
       try{oops(reason)}catch(_){};
       try{extra_oops(reason)}catch(_){};
       try{options.onblock({data:reason})}catch(_){};
@@ -49,15 +49,17 @@
       elem.srcdoc = '<scr'+'ipt>(function(k){function f(x){if(!k)++k,setTimeout(new Function(x.data))};addEventListener("message",f);try{document.documentElement.innerHTML="";}catch(_){};parent.postMessage('+JSON.stringify(key)+',"*")})()</scr'+'ipt>';
       readyp = false;
     }
+    function config(k) {
+      elem[k] = function(v) {
+        if(options.settings === undefined) options.settings = {};
+        options.settings[k] = v;
+      };
+    }
 
-    elem.whitelist = function(list) {
-      if(options.settings === undefined) options.settings = {};
-      options.settings.whitelist = list;
-    };
-    elem.blacklist = function(list) {
-      if(options.settings === undefined) options.settings = {};
-      options.settings.blacklist = list;
-    };
+    config("monitor");
+    config("whitelist");
+    config("blacklist");
+
     elem.load = function(text, oops) {
       if(code !== null) reset();
       extra_oops = oops;

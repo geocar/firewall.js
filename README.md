@@ -23,7 +23,7 @@ Ideally, a firewalled script will not be able to detect firewall.js
 
 Suggestions and contributions are welcome.
 
-##Whitelist/Blacklist
+###Whitelist/Blacklist
 An alternative to the "block all" default is a whitelist/blacklist mode.
 
     var f = FirewallJS(x);
@@ -38,6 +38,12 @@ will permit resources on `good.example.com` while:
 will permit resources on `good.example.com` and `whatever.example.com` but not `evil.example.com`.
 
 The blacklist and whitelist (if used) must be supplied before loading the content.
+
+###Monitor/Snitch Mode
+Another alternative mode is to simply monitor/log all of the URL requests instead of attempting to block them.
+
+    var f = FirewallJS(x);
+    f.monitor(true);
 
 ##Limitations
 Safari can't intercept changes to `innerHTML` and element attributes, so a `MutationObserver` is used instead.
