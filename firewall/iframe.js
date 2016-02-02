@@ -8,5 +8,5 @@ function intercept_iframe(obj) {
   return obj;
 }
 intercept_iframe(HTMLIFrameElement.prototype);
-innerhtml_observe("IFRAME",blocked);
+innerhtml_observe("IFRAME");
 

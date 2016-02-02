@@ -4,6 +4,12 @@
 var function_named   =require("./function_named");
 var blocked = require("./blocked");
 
-window["alert"]  =function_named("alert",  blocked);
-window["prompt"] =function_named("prompt", blocked);
-window["confirm"]=function_named("confirm",blocked);
+function intercept_modal(fn) {
+  window[fn] = function_named(fn, function() {
+    blocked('javascript:' + fn);
+  });
+}
+
+intercept_modal("alert");
+intercept_modal("prompt");
+intercept_modal("confirm");

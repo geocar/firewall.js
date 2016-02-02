@@ -6,26 +6,28 @@
     elem.setAttribute("sandbox","allow-scripts");
 
     elem.addEventListener("load", function() {
-      if(counter > 0) shutdown();
+      if(counter > 0) shutdown("javascript:onload");
       ++counter;
     });
     reset();
 
-    function shutdown() {
+    function shutdown(reason) {
       reset();
-      try{oops()}catch(_){};
-      try{extra_oops()}catch(_){};
+      try{oops(reason)}catch(_){};
+      try{extra_oops(reason)}catch(_){};
+      try{elem.onblock({data:reason})}catch(_){};
     }
 
     window.addEventListener("message", function(e) {
       if(e.source === elem.contentWindow) {
-        if(e.data === null) {
-        } else if(e.data === 'block') {
-          shutdown();
-
-        } else if(e.data === key) {
+        if(e.data === null) return;
+        if(e.data === key) {
           readyp=true;
           if(code !== null) send();
+          return;
+        }
+        if(typeof e.data === "string" && e.data.match(/^block:/)) {
+          shutdown(e.data.substr(6,e.data.length-6));
         }
       }
     },true);

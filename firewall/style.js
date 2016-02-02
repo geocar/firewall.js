@@ -4,7 +4,15 @@ var wrap = require("./wrap");
 
 function style_check(text) {
   if(text.cssRule) text = text.toString();
-  if(text.match(/url\s*\([\s"']*http/i)) blocked();
+  var m = text.match(/url\s*\(([\s"']*http.*)/i);
+  if(m) {
+    m=m[1].replace(/^\s*/,"");
+    var c = m.substr(0,1);
+    if     (c == "'") m = m.substr(1,m.length-1).replace(/\s*'\s*\)/,"");
+    else if(c == '"') m = m.substr(1,m.length-1).replace(/\s*"\s*\)/,'');
+    else m = m.replace(/\s*\).*$/, "");
+    blocked(m);
+  }
 }
 
 function style_intercept_property(style, key) {

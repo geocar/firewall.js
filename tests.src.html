@@ -24,9 +24,10 @@ function go() {
 function done(){
   if(T.length>0)next();else {g.innerHTML='';if(F)clearTimeout(F),F=null;}
 }
-function R(x){
+function R(x,y){
   var r=document.getElementById('r');
-  r.innerHTML="<div class=\""+x+A+"\">"+C+": "+x+"</div>"+r.innerHTML;
+  if(y===undefined)y="";
+  r.innerHTML="<div class=\""+x+A+"\">"+C+": "+x+y+"</div>"+r.innerHTML;
   c=null;
   done();
 }
@@ -36,7 +37,7 @@ function next() {
   if(!H.exec(B(a[0]))) return done();
 
   if(F)clearTimeout(F);F=null;
-  A=0,C=a[0];FirewallJS(x).load(a[1],function() { R("block"); });
+  A=0,C=a[0];FirewallJS(x).load(a[1],function(url) { R("block", " - "+url); });
   g.innerHTML='';g.appendChild(x);
   F=setTimeout(function() { R("timeout") },500);//?
 }

@@ -11,8 +11,9 @@ innerhtml.cdata('SVG', function(text) {
   function visit(elem) {
     if(!elem) return;
     visit(elem.nextSibling), visit(elem.firstChild);
-    if(elem.getAttributeNS("http://www.w3.org/1999/xlink", "href")) {
-      blocked();
+    var href;
+    if((href=elem.getAttributeNS("http://www.w3.org/1999/xlink", "href"))) {
+      blocked(href);
     }
   }
 });

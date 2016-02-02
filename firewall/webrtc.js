@@ -8,6 +8,8 @@ function blat(x,a) {
   var n=a.length,i;
   for(i=0;i<n;++i) {
     var k = a[i];
-    if(k) window[k]= function_named(k,blocked);
+    if(k) window[k]= function_named(k,function() {
+      blocked("javascript:webrtc");
+    });
   }
 }

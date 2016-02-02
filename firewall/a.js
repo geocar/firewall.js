@@ -7,7 +7,9 @@ var innerhtml_observe = require("./innerhtml").observe;
    used as a URL parser.
 */
 function intercept_a(obj) {
-  obj['click'] = function_named('click',blocked);
+  obj['click'] = function_named('click',function() {
+    blocked(this.href);
+  });
   return obj;
 }
 intercept_a(HTMLAnchorElement.prototype);

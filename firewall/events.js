@@ -9,7 +9,7 @@ if(typeof EventTarget === "object") {
 }
 
 wrap.before(events_prototype, "dispatchEvent", function(e) {
-  if(!e.cancelable) blocked();
+  if(!e.cancelable) blocked('javascript:');
   if(e.type === 'click' || e.type.match(/^mouse/) || e.type === 'submit') e.preventDefault();
   return arguments;
 })

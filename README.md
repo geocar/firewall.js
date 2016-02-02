@@ -3,7 +3,10 @@ firewall.js creates an `<iframe>` that blocks networking and downloading.
     var x = document.createElement("iframe");
     document.body.appendChild(x);
  
-    var f = firewall(x);
+    var f = FirewallJS(x);
+    l.onblock = function(e) {
+      console.log("Blocked access to:" + e.data);
+    };
     f.load("<script>new Image().src='http://www.google.com/'</script>")
 
 firewall.js is very new and incomplete: There are a *lot* of ways that JavaScript can be used to perform
@@ -74,7 +77,9 @@ The firewall API is in [firewall.js](firewall.js). It's responsible for getting 
 
 The payload is in [firewall/](firewall/) and are assembled with the firewall API into `firewall.min.js` using [build.js](build.js).
 [webpack](https://webpack.github.io/) is used for dependency tracking, and [uglifyJS](https://www.npmjs.com/package/uglify-js) is used
-to minimise the chunks.
+to minimise the chunks. Any module that doesn't define `module.exports` is considered an "entry point" and will be loaded automatically,
+so to have a module demand-loaded late for its side effects, you must set `module.exports` to something.
+
 
 ##Licensing
 firewall.js, and its product `firewall.min.js` are redistributable under the [LGPL v3 or any later version](http://www.gnu.org/licenses/lgpl.en.html), and for the avoidance of doubt and confusion, are derived from the [tests](tests/).

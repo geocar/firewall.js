@@ -7,4 +7,4 @@ var e=document.createEvent("MouseEvents");
 e.initMouseEvent("click", 
   false,false,document.defaultView,0,x,y,x,y,false,false,false,false,0,a);
 a.firstChild.dispatchEvent(e);
-setTimeout(function(){ parent.postMessage('block','*') },2);
+setTimeout(function(){ parent.postMessage('block:a2','*') },2);

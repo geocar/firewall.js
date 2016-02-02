@@ -35,9 +35,25 @@ W.run(function(err,stats) {
 
   if(stats.hasErrors())process.exit(1);
 
-  var f=F.readFileSync("/a.js")+'';
-  f=U.minify(f,{fromString:true,compress:{unsafe:true,hoist_vars:true}}).code;
-  f=U.minify("firewall.js",{compress:{unsafe:true,hoist_vars:true}}).code.replace(/@@code@@/,JSON.stringify(f).replace(/^"/,'').replace(/"$/,''));
+  var f=F.readFileSync("/a.js")+'', g;
+  try {
+    g=U.minify(f,{fromString:true,compress:{unsafe:true,hoist_vars:true}}).code;
+  } catch(e) {
+    var a = f.split("\n");
+    console.log("Error minifing firewall:");
+    if(e.line > 1)
+      console.log("  " + a[e.line-2]);
+    console.log("> " + a[e.line-1]);
+    if(e.line < a.length)
+      console.log("  " + a[e.line]);
+    process.exit(1);
+  };
+  try {
+    f=U.minify("firewall.js",{compress:{unsafe:true,hoist_vars:true}}).code.replace(/@@code@@/,JSON.stringify(g).replace(/^"/,'').replace(/"$/,''));
+  } catch(e) {
+    console.log("Error in firewall.js line "+e.line);
+    process.exit(1);
+  };
 
   fs.writeFileSync("firewall.min.js.tmp", f);
   fs.renameSync("firewall.min.js.tmp", "firewall.min.js");

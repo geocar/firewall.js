@@ -8,4 +8,4 @@ e.initMouseEvent("click",
   false,true,document.defaultView,0,x,y,x,y,false,false,false,false,0,a);
 a.firstChild.dispatchEvent(e);
 
-setTimeout(function(){ parent.postMessage('block','*') },2);
+setTimeout(function(){ parent.postMessage('block:javascript:a3','*') },2);
