@@ -23,7 +23,7 @@ Ideally, a firewalled script will not be able to detect firewall.js
 
 Suggestions and contributions are welcome.
 
-###Whitelist/Blacklist
+### Whitelist/Blacklist
 An alternative to the "block all" default is a whitelist/blacklist mode.
 
     var f = FirewallJS(x);
@@ -39,33 +39,33 @@ will permit resources on `good.example.com` and `whatever.example.com` but not `
 
 The blacklist and whitelist (if used) must be supplied before loading the content.
 
-###Monitor/Snitch Mode
+### Monitor/Snitch Mode
 Another alternative mode is to simply monitor/log all of the URL requests instead of attempting to block them.
 
     var f = FirewallJS(x);
     f.monitor(true);
 
-##Limitations
+## Limitations
 Safari can't intercept changes to `innerHTML` and element attributes, so a `MutationObserver` is used instead.
 
 This means that network operations might not be blocked, although at least they can be detected and the iframe
 shutdown.
-##Building
+## Building
 
-###Pre-flight
+### Pre-flight
 
 Node.JS is required to build the script and its test cases.
 
     npm install
 
-###Development
+### Development
 
 To build `firewall.min.js` and `tests.html` run:
 
     npm run build
 
-##Contributing
-###Tests
+## Contributing
+### Tests
 Tests need to produce network activity; a full-featured test will send a signal to the [test system](tests.src.html).
 On Google Chrome, we can reliably [detect network activity](firewall/poll.js) even if we can't block it, however
 if your test only works on another browser, you may need to add some instrumentation:
@@ -86,7 +86,7 @@ After every change, rebuild the test system with:
 
 then verify the test by loading `tests.html` in a web browser. Note you can load a specific test by opening `tests.html#`*testname* e.g. `tests.html#style` will load [tests/style.js](tests/style.js).
 
-###Anti-Test
+### Anti-Test
 An Anti-Test will make sure that a test *isn't* blocked. If you have example code that *should* work but doesn't with
 firewall.js, you can contribute an Anti-Test to prevent further regressions.
 
@@ -94,7 +94,7 @@ firewall.js, you can contribute an Anti-Test to prevent further regressions.
 
 This should be done first. Look at [anti\_a.js](tests/anti_a.js) for an example.
 
-###Firewall
+### Firewall
 The firewall API is in [firewall.js](firewall.js). It's responsible for getting the payload into the iframe, and interpreting errors.
 
 The payload is in [firewall/](firewall/) and are assembled with the firewall API into `firewall.min.js` using [build.js](build.js).
@@ -103,7 +103,7 @@ to minimise the chunks. Any module that doesn't define `module.exports` is consi
 so to have a module demand-loaded late for its side effects, you must set `module.exports` to something.
 
 
-##Licensing
+## Licensing
 firewall.js, and its product `firewall.min.js` are redistributable under the [LGPL v3 or any later version](http://www.gnu.org/licenses/lgpl.en.html), and for the avoidance of doubt and confusion, are derived from the [tests](tests/).
 
 The intention is: if you use firewall.js in your own product, you are **not** required to make available the source code to your product unless you introduce the ability to protect against a new attack vector.
