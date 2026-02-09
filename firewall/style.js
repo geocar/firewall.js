@@ -28,6 +28,13 @@ function style_intercept_property(style, key) {
 function style_intercept(style) {
   style_intercept_property(style, "background");
   style_intercept_property(style, "backgroundImage");
+  style_intercept_property(style, "border");
+  style_intercept_property(style, "borderImage");
+  style_intercept_property(style, "webkitBorderImage");
+  style_intercept_property(style, "webkitMaskBoxImage");
+  style_intercept_property(style, "webkitMaskImage");
+  style_intercept_property(style, "mask");
+  style_intercept_property(style, "maskImage");
   style_intercept_property(style, "cursor");
   style_intercept_property(style, "content");
   style_intercept_property(style, "listStyle");
